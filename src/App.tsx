@@ -2,9 +2,15 @@ import { useEffect } from "react";
 
 function isItEdreansBirthday(month: number, day: number) {
   const today = new Date();
-  const localTimeZoneOffset = new Date().getTimezoneOffset();
-  const localDate = new Date(today.getTime() - localTimeZoneOffset * 60 * 1000);
-  const x = localDate.getMonth() === month && localDate.getDate() === day;
+
+  // Get the local time zone offset in minutes
+  const timezoneOffset = today.getTimezoneOffset();
+
+  // Adjust the date to local time
+  today.setMinutes(today.getMinutes() - timezoneOffset);
+  const dayInUTC = today.getUTCDate();
+
+  const x = today.getMonth() === month && dayInUTC === day;
 
   if (x) {
     document.body.classList.add("birthday");
